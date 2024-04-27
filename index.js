@@ -3,7 +3,7 @@
 const express=require('express')
 
 const cors=require('cors')
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const app=express()
 const port=5000;
 //miidle ware
@@ -36,6 +36,13 @@ const spotCollection=client.db('addSpotDB').collection('addSpot')
 app.get('/addSpot',async (req,res)=>{
 
     const result=await spotCollection.find().toArray()
+    res.send(result)
+})
+
+/* single view detal */
+app.get('/singleSpot/:id',async (req,res)=>{
+    console.log(req.params.id)
+    const result=await spotCollection.findOne({_id:new ObjectId(req.params.id)})
     res.send(result)
 })
 /* post method with ADD SPOT*/
