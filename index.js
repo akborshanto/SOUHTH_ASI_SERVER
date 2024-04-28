@@ -52,6 +52,63 @@ app.post('/addSpot',async (req,res)=>{
     res.send(result)
 })
 
+/* update======================= */
+
+
+app.put('/updateSpot/:id',async (req,res)=>{
+
+    const quary={_id:new ObjectId(req.params.id)}
+    const data={
+
+$set:{
+    country_Name:req.body.country_Name,
+    ToureistName:req.body.ToureistName
+}
+
+    }
+
+    const result=await spotCollection.updateOne(quary,data)
+    res.send(result)
+})
+
+
+
+
+
+
+
+// app.get('/addSpot/:id',async(req,res)=>{
+//     const id=req.params.id;
+//     const quary={_id:new ObjectId(id)}
+//     const result=await spotCollection.findOne(quary)
+//     res.send(result)
+// })
+// /* update method  */
+// app.put('/addSpot/:id',async(req,res)=>{
+//     const id=req.params.id;
+//     const filter={_id:new ObjectId(id)}
+//     const option={upsert:true}
+//     const updateUser=req.body;
+//     const update={
+//         $set:{
+
+// photo:updateUser.photo,
+// country_Name:updateUser.country_Name
+
+//         }
+//     }
+//     const result=await spotCollection.updateOne(filter,update,option)
+//     res.send(result)
+// })
+
+/* delete method with touristSPOt */
+app.delete('/addSpot/:id',async(req,res)=>{
+
+    const id=req.params.id;
+    const filter={_id:new ObjectId(id)}
+    const result=await spotCollection.deleteOne(filter)
+    res.send(result)
+})
 
 
     // Send a ping to confirm a successful connection
