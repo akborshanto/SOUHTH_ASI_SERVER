@@ -42,7 +42,16 @@ app.get('/allSpot',async(req,res)=>{
     res.send(result)
 
 })
-/* al data store */
+
+/* view detail================ */
+app.get("/viewDetail/:id",async (req,res)=>{
+
+    const result=await spotCollection.findOne({_id: new ObjectId(req.params.id)})
+    console.log(result)
+    res.send(result)
+})
+
+/* al ALLL  data store */
 app.post("/allSpot", async (req, res) => {
      console.log(req.body);
      const result = await spotCollection.insertOne(req.body);
@@ -54,7 +63,7 @@ app.post("/allSpot", async (req, res) => {
 
 
 
-    /* post methdo MY LIST 🚩✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅ */
+/* post methdo MY LIST 🚩✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅ */
     app.post("/addTourism", async (req, res) => {
      // console.log(req.body);
       const result = await spotCollection.insertOne(req.body);
