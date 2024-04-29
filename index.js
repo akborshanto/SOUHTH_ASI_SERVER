@@ -32,37 +32,59 @@ async function run() {
 
     const spotCollection = client.db("addSpotDB").collection("addSpot");
 
-    /* post methdo */
+
+
+
+/* get data */
+app.get('/allSpot',async(req,res)=>{
+    const cursor= await spotCollection.find()
+    const result=await cursor.toArray()
+    res.send(result)
+
+})
+/* al data store */
+app.post("/allSpot", async (req, res) => {
+     console.log(req.body);
+     const result = await spotCollection.insertOne(req.body);
+
+     console.log(result);
+     res.send(result);
+   });
+
+
+
+
+    /* post methdo MY LIST 🚩✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅ */
     app.post("/addTourism", async (req, res) => {
-      console.log(req.body);
+     // console.log(req.body);
       const result = await spotCollection.insertOne(req.body);
 
-      console.log(result);
+     // console.log(result);
       res.send(result);
     });
 
-    /* get method mylislt */
+    /* get method mylislt ============*/
     app.get("/myList/:email", async (req, res) => {
-      console.log(req.params.email);
+      //console.log(req.params.email);
       const result = await spotCollection
         .find({ email: req.params.email })
         .toArray();
       res.send(result);
     });
 
-    /* single update dataat */
+    /* single update dataat ==================*/
 
     app.get("/singleUpdate/:id", async (req, res) => {
       const result = await spotCollection.findOne({
         _id: new ObjectId(req.params.id),
       });
-      console.log(result);
+      //console.log(result);
       res.send(result);
     });
 
-    /* update daaa */
+    /* update ======================= */
     app.put("/AllUpdate/:id", async (req, res) => {
-      console.log(req.params.id);
+      //console.log(req.params.id);
       const quary = { _id: new ObjectId(req.params.id) };
       const data = {
         $set: {
@@ -74,95 +96,30 @@ async function run() {
           average_cost: req.body.average_cost,
           seasonality: req.body.seasonality,
           travel_time: req.body.travel_time,
-
           totaVisitorsPerYear: req.body.totaVisitorsPerYear,
         },
       };
-      const result=spotCollection.updateOne(quary,data)
+      const result=await spotCollection.updateOne(quary,data)
+      console.log(result)
       res.send(result)
     });
 
-    /* ==============v 🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩============ */
 
-    // /* get method with ADD SPOT */
-    // app.get('/addSpot',async (req,res)=>{
+/* delelte */
+app.delete("/delete/:id",async (req,res)=>{
 
-    //     const result=await (await spotCollection.find().sort().toArray())
-    //     res.send(result)
-    // })
+    const id=req.params.id;
+      const filter={_id:new ObjectId(id)}
+      const result=await spotCollection.deleteOne(filter)
+      res.send(result)
 
-    // /* single view detal */
-    // app.get('/singleSpot/:id',async (req,res)=>{
-    //     console.log(req.params.id)
-    //     const result=await spotCollection.findOne({_id:new ObjectId(req.params.id)})
-    //     res.send(result)
-    // })
-    // /* post method with ADD SPOT*/
-    // app.post('/addSpot',async (req,res)=>{
-    //     const newSpot=req.body;
-    //     const result=await spotCollection.insertOne(newSpot)
-    //     console.log(result)
-    //     res.send(result)
-    // })
 
-    /* update======================= */
+})
 
-    // app.put('/updateSpot/:id',async (req,res)=>{
 
-    //     const quary={_id:new ObjectId(req.params.id)}
-    //     const data={
 
-    // $set:{
-    //     photo:req.body.photo,
-    //     country_Name:req.body.country_Name,
-    //     ToureistName:req.body.ToureistName,
-    //     location:req.body.location,
-    //     description:req.body.description,
-    //     average_cost:req.body.average_cost,
-    //     seasonality:req.body.seasonality,
-    //     travel_time:req.body.travel_time,
 
-    //     totaVisitorsPerYear:req.body.totaVisitorsPerYear,
-
-    // }
-
-    //     }
-
-    //     const result=await spotCollection.updateOne(quary,data)
-    //     res.send(result)
-    // })
-
-    /* ===============MYLIST============= */
-    // app.post('/addPD',async (req,res)=>{
-
-    //     console.log(req.body)
-    //     const result=await spotCollection.insertOne(req.body)
-    //     console.log(result)
-    //     res.send(result)
-    // })
-
-    // app.get('/addPD/:email',async (req,res)=>{
-    // console.log(req.params.email)
-    // const result=await spotCollection.find({email:req.params.email}).toArray()
-    // res.send(result)
-    // })
-
-    // app.delete('/addPD/:id',async(req,res)=>{
-
-    //     const id=req.params.id;
-    //     const filter={_id:new ObjectId(id)}
-    //     const result=await spotCollection.deleteOne(filter)
-    //     res.send(result)
-    // })
-
-    // /* delete method with touristSPOt ======================*/
-    // app.delete('/addSpot/:id',async(req,res)=>{
-
-    //     const id=req.params.id;
-    //     const filter={_id:new ObjectId(id)}
-    //     const result=await spotCollection.deleteOne(filter)
-    //     res.send(result)
-    // })
+    /* ==============v✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅✅============ */
 
     // Send a ping to confirm a successful connection
     await client.db("admin").command({ ping: 1 });
