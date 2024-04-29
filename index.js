@@ -32,60 +32,57 @@ async function run() {
 
     const spotCollection = client.db("addSpotDB").collection("addSpot");
 
-/* post methdo */
-app.post('/addTourism',async(req,res)=>{
-    console.log(req.body)
-const result=await spotCollection.insertOne(req.body)
+    /* post methdo */
+    app.post("/addTourism", async (req, res) => {
+      console.log(req.body);
+      const result = await spotCollection.insertOne(req.body);
 
-console.log(result)
-res.send(result)
-})
+      console.log(result);
+      res.send(result);
+    });
 
+    /* get method mylislt */
+    app.get("/myList/:email", async (req, res) => {
+      console.log(req.params.email);
+      const result = await spotCollection
+        .find({ email: req.params.email })
+        .toArray();
+      res.send(result);
+    });
 
+    /* single update dataat */
 
-/* get method mylislt */
-app.get("/myList/:email",async (req,res)=>{
-    console.log(req.params.email)
-const result=await spotCollection.find({email:req.params.email}).toArray()
-res.send(result)
+    app.get("/singleUpdate/:id", async (req, res) => {
+      const result = await spotCollection.findOne({
+        _id: new ObjectId(req.params.id),
+      });
+      console.log(result);
+      res.send(result);
+    });
 
-  
-})
+    /* update daaa */
+    app.put("/AllUpdate/:id", async (req, res) => {
+      console.log(req.params.id);
+      const quary = { _id: new ObjectId(req.params.id) };
+      const data = {
+        $set: {
+          photo: req.body.photo,
+          country_Name: req.body.country_Name,
+          ToureistName: req.body.ToureistName,
+          location: req.body.location,
+          description: req.body.description,
+          average_cost: req.body.average_cost,
+          seasonality: req.body.seasonality,
+          travel_time: req.body.travel_time,
 
+          totaVisitorsPerYear: req.body.totaVisitorsPerYear,
+        },
+      };
+      const result=spotCollection.updateOne(quary,data)
+      res.send(result)
+    });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-/* ==============v 🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩============ */
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    /* ==============v 🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩🚩============ */
 
     // /* get method with ADD SPOT */
     // app.get('/addSpot',async (req,res)=>{
