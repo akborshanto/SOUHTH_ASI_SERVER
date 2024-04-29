@@ -35,7 +35,7 @@ const spotCollection=client.db('addSpotDB').collection('addSpot')
 /* get method with ADD SPOT */
 app.get('/addSpot',async (req,res)=>{
 
-    const result=await spotCollection.find().toArray()
+    const result=await (await spotCollection.find().sort().toArray())
     res.send(result)
 })
 
@@ -49,6 +49,7 @@ app.get('/singleSpot/:id',async (req,res)=>{
 app.post('/addSpot',async (req,res)=>{
     const newSpot=req.body;
     const result=await spotCollection.insertOne(newSpot)
+    console.log(result)
     res.send(result)
 })
 
@@ -71,8 +72,20 @@ $set:{
     res.send(result)
 })
 
+/* ===============MYLIST============= */
+app.post('/addPD',async (req,res)=>{
+    
+    console.log(req.body)
+    const result=await spotCollection.insertOne(req.body)
+    console.log(result)
+    res.send(result)
+})
 
-
+app.get('/addPD/:email',async (req,res)=>{
+console.log(req.params.email)
+const result=await spotCollection.find({email:req.params.email}).toArray()
+res.send(result)
+})
 
 
 
@@ -101,7 +114,7 @@ $set:{
 //     res.send(result)
 // })
 
-/* delete method with touristSPOt */
+/* delete method with touristSPOt ======================*/
 app.delete('/addSpot/:id',async(req,res)=>{
 
     const id=req.params.id;
