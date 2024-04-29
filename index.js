@@ -31,7 +31,15 @@ async function run() {
     await client.connect();
 
     const spotCollection = client.db("addSpotDB").collection("addSpot");
+    const internationlCollections = client.db("addSpotDB").collection("internationalSpot");
 
+/* get internarion data */
+app.get('/getAllInternationalData',async(req,res)=>{
+    const cursor= await internationlCollections.find()
+    const result=await cursor.toArray()
+    res.send(result)
+
+})
 
 
 
